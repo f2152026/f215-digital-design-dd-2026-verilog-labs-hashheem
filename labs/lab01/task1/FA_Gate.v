@@ -14,12 +14,27 @@ module FA_Gate(
   output sum,
   output cout
 );
-  wire ps, pc1, pc2;
+  //wire ps, pc1, pc2;
+  wire ps;
+  wire g1;
+  wire g2;
 
-  xor #(2) (ps,  a,   b);
-  and #(2) (pc1, a,   b);
-  xor #(2) (sum, cin, ps);
-  and #(2) (pc2, cin, ps);
-  or #(2) (cout, pc1, pc2);
+  //xor #(2) (ps,  a,   b);
+  //and #(2) (pc1, a,   b);
+  //xor #(2) (sum, cin, ps);
+  //and #(2) (pc2, cin, ps);
+  //or #(2) (cout, pc1, pc2);
+  // a XOR b
+  xor (ps, a, b);
+
+  // Sum = (a XOR b) XOR cin
+  xor (sum, ps, cin);
+
+  // Carry terms
+  and (g1, a, b);
+  and (g2, ps, cin);
+
+  // Cout = ab + (a XOR b)cin
+  or (cout, g1, g2);
 
 endmodule
